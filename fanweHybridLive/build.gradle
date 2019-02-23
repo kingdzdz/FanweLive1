@@ -1,0 +1,168 @@
+apply plugin: 'com.android.application'
+
+android {
+
+    useLibrary 'org.apache.http.legacy'
+
+    compileSdkVersion 25
+    buildToolsVersion '25.0.3'
+    aaptOptions{
+        cruncherEnabled = false
+        useNewCruncher = false
+    }
+
+    defaultConfig {
+        applicationId "com.fanwe.live"
+        minSdkVersion 15
+        targetSdkVersion 22
+        versionCode 2016120701
+        versionName "2.0.18"
+        buildConfigField 'String', 'SERVER_URL_INIT_URL', '"http://www.xxx.com/app.php?act=init"'
+
+        multiDexEnabled true
+
+        ndk {
+            abiFilter 'armeabi-v7a'
+        }
+    }
+
+    //签名
+    signingConfigs {
+        release {
+            storeFile file("fanwe.keystore")
+            storePassword "fanwe99cnlin"
+            keyAlias "fanwe"
+            keyPassword "fanwe99cnlin"
+        }
+        release {
+            storeFile file("fanwe.keystore")
+            storePassword "fanwe99cnlin"
+            keyAlias "fanwe"
+            keyPassword "fanwe99cnlin"
+        }
+    }
+
+    // WFT支付demo签名
+//    signingConfigs {
+//        release {
+//            storeFile file("demo.keystore")
+//            storePassword "android"
+//            keyAlias "demo"
+//            keyPassword "android"
+//        }
+//        release {
+//            storeFile file("demo.keystore")
+//            storePassword "android"
+//            keyAlias "demo"
+//            keyPassword "android"
+//        }
+//    }
+
+    buildTypes {
+        debug {
+            zipAlignEnabled false
+            minifyEnabled false
+            signingConfig signingConfigs.release
+        }
+        release {
+            zipAlignEnabled true
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
+            signingConfig signingConfigs.release
+        }
+    }
+
+
+
+    packagingOptions {
+        exclude 'META-INF/DEPENDENCIES.txt'
+        exclude 'META-INF/LICENSE.txt'
+        exclude 'META-INF/NOTICE.txt'
+        exclude 'META-INF/NOTICE'
+        exclude 'META-INF/LICENSE'
+        exclude 'META-INF/DEPENDENCIES'
+        exclude 'META-INF/notice.txt'
+        exclude 'META-INF/license.txt'
+        exclude 'META-INF/dependencies.txt'
+        exclude 'META-INF/LGPL2.1'
+    }
+
+    lintOptions {
+        abortOnError false
+    }
+
+    dexOptions {
+        javaMaxHeapSize "2g"
+    }
+
+    productFlavors {
+
+        
+
+        //方维百媚直播
+        fanwebm {
+            versionCode 2017072001
+            versionName "2.4.1"
+            buildConfigField 'String', 'SERVER_URL', '"http://live.fanwe.net"'
+        }
+
+        //映秀直播
+        yingxiu {
+            applicationId "tv.yingxiu.live"
+            versionCode 2017071701
+            versionName "2.4.0"
+            buildConfigField 'String', 'SERVER_URL', '"http://live.yingxiu.tv"'
+        }
+
+    }
+
+    android.applicationVariants.all { variant ->
+        variant.outputs.each { output ->
+            output.outputFile = new File(output.outputFile.parent, variant.name + "_" + variant.versionName + "_" + variant.versionCode + ".apk");
+        }
+    }
+}
+
+repositories {
+    flatDir {
+        dirs 'libs'
+    }
+}
+
+dependencies {
+    compile fileTree(include: ['*.jar'], dir: 'libs')
+    compile(name: 'libraryAdapterHttp-release', ext: 'aar')
+    compile(name: 'libraryAndroidPercentSupportExtend-release', ext: 'aar')
+    compile(name: 'libraryAndroidPullToRefresh-release', ext: 'aar')
+    compile(name: 'libraryPayAlipay-release', ext: 'aar')
+    compile(name: 'libraryPayBaofoo-release', ext: 'aar')
+    compile(name: 'libraryPayUnionpay-release', ext: 'aar')
+    compile(name: 'libraryPhotoViewMaster-release', ext: 'aar')
+    compile(name: 'libraryQrcodeZxing-release', ext: 'aar')
+    compile(name: 'librarySocialUmeng-release', ext: 'aar')
+    compile(name: 'librarySpan-release', ext: 'aar')
+    compile(name: 'pickerview-release', ext: 'aar')
+    compile(name: 'PushSDK-release', ext: 'aar')
+    compile(name: 'TimePickerDialog-release', ext: 'aar')
+    compile(name: 'libraryIMTencent-release', ext: 'aar')
+    compile(name: 'libraryMapTencent-release', ext: 'aar')
+    compile "com.daimajia.swipelayout:library:1.2.0@aar"
+    compile 'com.android.support:recyclerview-v7:25.3.1'
+    compile 'com.android.support:cardview-v7:25.3.1'
+    compile 'com.android.support:design:25.3.1'
+    compile 'com.github.ctiao:DanmakuFlameMaster:0.5.3'//bilibili弹幕
+    debugCompile 'com.squareup.leakcanary:leakcanary-android:1.5.1'
+    releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.1'
+    compile 'com.github.bumptech.glide:glide:3.7.0'
+    compile 'com.google.android:flexbox:0.2.6'
+    compile 'com.yalantis:ucrop:2.2.0'
+    compile 'com.umeng.analytics:analytics:latest.integration'
+    compile 'com.ksyun.media:libksylive-java:2.2.5'
+    compile 'com.ksyun.media:libksylive-armv7a:2.2.5'
+    compile project(':libGame')
+    compile 'jp.wasabeef:glide-transformations:2.0.1'
+
+    //百媚==========================================
+    compile 'com.scottsu:stateslayout:1.0.8'
+    compile 'jp.wasabeef:recyclerview-animators:2.2.3'
+}
